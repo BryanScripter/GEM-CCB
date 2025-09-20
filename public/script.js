@@ -91,7 +91,7 @@ const answers = questions.map(() => ({ response: null, justification: "", textRe
 
 // DOM elements
 const initialPage = document.getElementById("initial-page")
-const informationPage = document.getElementById("information-page") // Added information page element
+const informationPage = document.getElementById("information-page")
 const formSection = document.getElementById("form-section")
 const questionsContainer = document.getElementById("questions-container")
 const showResultsBtn = document.getElementById("show-results-btn")
@@ -100,8 +100,7 @@ const resultsSection = document.getElementById("results-section")
 const gemForm = document.getElementById("gem-form")
 const inspectorInput = document.getElementById("inspector-name")
 const congregationInput = document.getElementById("congregation-name")
-const startEvaluationBtn = document.getElementById("start-evaluation-btn")
-const proceedToFormBtn = document.getElementById("proceed-to-form-btn") // Added proceed button element
+const proceedToFormBtn = document.getElementById("proceed-to-form-btn")
 const initialMessage = document.getElementById("initial-message")
 const resetFormBtn = document.getElementById("reset-form-btn")
 
@@ -117,8 +116,7 @@ function init() {
 function setupInitialPageListeners() {
   inspectorInput.addEventListener("input", updateInitialPageState)
   congregationInput.addEventListener("input", updateInitialPageState)
-  startEvaluationBtn.addEventListener("click", startEvaluation)
-  proceedToFormBtn.addEventListener("click", proceedToForm) // Added proceed button listener
+  // Removed the proceed button event listener from initial page
 }
 
 // Update initial page state
@@ -127,23 +125,24 @@ function updateInitialPageState() {
   const congregationName = congregationInput.value.trim()
 
   const canStart = inspectorName !== "" && congregationName !== ""
-  startEvaluationBtn.disabled = !canStart
-  proceedToFormBtn.disabled = !canStart
 
+  // Automatically show information page when both fields are filled
   if (canStart) {
     initialMessage.style.display = "none"
+    // Show information page automatically
+    initialPage.classList.add("hidden")
+    informationPage.classList.remove("hidden")
+    window.scrollTo(0, 0)
   } else {
     initialMessage.style.display = "block"
-    initialMessage.textContent = "Preencha todos os campos para iniciar a avaliação"
+    initialMessage.textContent = "Preencha todos os campos para prosseguir"
+    // Hide information page if fields are not complete
+    informationPage.classList.add("hidden")
+    initialPage.classList.remove("hidden")
   }
 }
 
-// Start evaluation - now shows information page
-function startEvaluation() {
-  initialPage.classList.add("hidden")
-  informationPage.classList.remove("hidden")
-  window.scrollTo(0, 0)
-}
+// Removed proceedDirectlyToForm function as it's no longer needed
 
 // Proceed to form from information page
 function proceedToForm() {
@@ -239,6 +238,8 @@ function setupEventListeners() {
   document.getElementById("print-btn").addEventListener("click", () => window.print())
   document.getElementById("back-to-form-btn").addEventListener("click", backToForm)
   resetFormBtn.addEventListener("click", resetForm)
+  // Added event listener for proceed to form button
+  document.getElementById("proceed-to-form-btn").addEventListener("click", proceedToForm)
 }
 
 // Update progress bar and button state
