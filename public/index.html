@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -21,17 +23,17 @@
             <div class="welcome-card">
                 <h2>📋 Informações Iniciais</h2>
                 <p>Antes de iniciar a avaliação, precisamos de algumas informações:</p>
-                
+
                 <div class="input-group">
                     <label for="inspector-name">Nome do Responsável pela Vistoria: *</label>
                     <input type="text" id="inspector-name" placeholder="Digite seu nome completo..." required>
                 </div>
-                
+
                 <div class="input-group">
                     <label for="congregation-name">Nome da Congregação/Igreja: *</label>
                     <input type="text" id="congregation-name" placeholder="Digite o nome da congregação..." required>
                 </div>
-                
+
                 <button type="button" id="start-evaluation-btn" class="btn btn-primary" disabled>
                     <span class="btn-icon">▶️</span>
                     Iniciar Avaliação
@@ -57,7 +59,7 @@
             <!-- Questions Form -->
             <form id="gem-form" class="questions-form">
                 <div id="questions-container"></div>
-                
+
                 <div class="submit-section">
                     <button type="button" id="show-results-btn" class="btn btn-primary" disabled>
                         <span class="btn-icon">📊</span>
@@ -119,10 +121,16 @@
                     <span class="btn-icon">📝</span>
                     Voltar ao Formulário
                 </button>
+                <!-- Added reset button to clear all data and start over -->
+                <button type="button" id="reset-form-btn" class="btn btn-danger">
+                    <span class="btn-icon">🔄</span>
+                    Resetar Formulário
+                </button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>

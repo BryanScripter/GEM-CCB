@@ -101,6 +101,7 @@ const inspectorInput = document.getElementById("inspector-name")
 const congregationInput = document.getElementById("congregation-name")
 const startEvaluationBtn = document.getElementById("start-evaluation-btn")
 const initialMessage = document.getElementById("initial-message")
+const resetFormBtn = document.getElementById("reset-form-btn")
 
 // Initialize the application
 function init() {
@@ -226,8 +227,7 @@ function setupEventListeners() {
   document.getElementById("download-pdf-btn").addEventListener("click", generatePDF)
   document.getElementById("print-btn").addEventListener("click", () => window.print())
   document.getElementById("back-to-form-btn").addEventListener("click", backToForm)
-
-  congregationInput.addEventListener("input", updateProgress)
+  resetFormBtn.addEventListener("click", resetForm)
 }
 
 // Update progress bar and button state
@@ -352,16 +352,15 @@ function generateDetailedAnswers() {
                     <span>Resposta:</span>
                     <span class="answer-badge ${response}">${response ? (response === "sim" ? "SIM" : "NÃO") : "Não respondida"}</span>
                 </div>
-                ${
-                  justification
-                    ? `
+                ${justification
+          ? `
                     <div class="answer-justification">
                         <label>Justificativa:</label>
                         <p>${justification}</p>
                     </div>
                 `
-                    : ""
-                }
+          : ""
+        }
             `
     } else {
       const textResponse = answers[index].textResponse
@@ -489,6 +488,51 @@ function backToForm() {
   resultsSection.classList.add("hidden")
   formSection.classList.remove("hidden")
   window.scrollTo(0, 0)
+}
+
+// Reset form function to clear all data and return to initial page
+function resetForm() {
+  // Show confirmation dialog
+  if (confirm("Tem certeza que deseja resetar o formulário? Todos os dados preenchidos serão perdidos.")) {
+    // Clear all answers
+    answers.forEach((answer, index) => {
+      answers[index] = { response: null, justification: "", textResponse: "" }
+    })
+
+    // Clear input fields
+    inspectorInput.value = ""
+    congregationInput.value = ""
+
+    // Clear all form inputs
+    questions.forEach((question, index) => {
+      if (question.type === "yesno") {
+        const simRadio = document.getElementById(`sim-${index}`)
+        const naoRadio = document.getElementById(`nao-${index}`)
+        const justificationText = document.getElementById(`justification-text-${index}`)
+        const justificationContainer = document.getElementById(`justification-${index}`)
+
+        if (simRadio) simRadio.checked = false
+        if (naoRadio) naoRadio.checked = false
+        if (justificationText) justificationText.value = ""
+        if (justificationContainer) justificationContainer.style.display = "none"
+      } else {
+        const textArea = document.getElementById(`text-${index}`)
+        if (textArea) textArea.value = ""
+      }
+    })
+
+    // Hide results and form sections, show initial page
+    resultsSection.classList.add("hidden")
+    formSection.classList.add("hidden")
+    initialPage.classList.remove("hidden")
+
+    // Update progress and initial page state
+    updateProgress()
+    updateInitialPageState()
+
+    // Scroll to top
+    window.scrollTo(0, 0)
+  }
 }
 
 // Initialize the application when DOM is loaded
