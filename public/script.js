@@ -91,6 +91,7 @@ const answers = questions.map(() => ({ response: null, justification: "", textRe
 
 // DOM elements
 const initialPage = document.getElementById("initial-page")
+const informationPage = document.getElementById("information-page") // Added information page element
 const formSection = document.getElementById("form-section")
 const questionsContainer = document.getElementById("questions-container")
 const showResultsBtn = document.getElementById("show-results-btn")
@@ -100,6 +101,7 @@ const gemForm = document.getElementById("gem-form")
 const inspectorInput = document.getElementById("inspector-name")
 const congregationInput = document.getElementById("congregation-name")
 const startEvaluationBtn = document.getElementById("start-evaluation-btn")
+const proceedToFormBtn = document.getElementById("proceed-to-form-btn") // Added proceed button element
 const initialMessage = document.getElementById("initial-message")
 const resetFormBtn = document.getElementById("reset-form-btn")
 
@@ -116,6 +118,7 @@ function setupInitialPageListeners() {
   inspectorInput.addEventListener("input", updateInitialPageState)
   congregationInput.addEventListener("input", updateInitialPageState)
   startEvaluationBtn.addEventListener("click", startEvaluation)
+  proceedToFormBtn.addEventListener("click", proceedToForm) // Added proceed button listener
 }
 
 // Update initial page state
@@ -125,6 +128,7 @@ function updateInitialPageState() {
 
   const canStart = inspectorName !== "" && congregationName !== ""
   startEvaluationBtn.disabled = !canStart
+  proceedToFormBtn.disabled = !canStart
 
   if (canStart) {
     initialMessage.style.display = "none"
@@ -134,9 +138,16 @@ function updateInitialPageState() {
   }
 }
 
-// Start evaluation
+// Start evaluation - now shows information page
 function startEvaluation() {
   initialPage.classList.add("hidden")
+  informationPage.classList.remove("hidden")
+  window.scrollTo(0, 0)
+}
+
+// Proceed to form from information page
+function proceedToForm() {
+  informationPage.classList.add("hidden")
   formSection.classList.remove("hidden")
   window.scrollTo(0, 0)
 }
@@ -352,15 +363,16 @@ function generateDetailedAnswers() {
                     <span>Resposta:</span>
                     <span class="answer-badge ${response}">${response ? (response === "sim" ? "SIM" : "NÃO") : "Não respondida"}</span>
                 </div>
-                ${justification
-          ? `
+                ${
+                  justification
+                    ? `
                     <div class="answer-justification">
                         <label>Justificativa:</label>
                         <p>${justification}</p>
                     </div>
                 `
-          : ""
-        }
+                    : ""
+                }
             `
     } else {
       const textResponse = answers[index].textResponse
@@ -521,9 +533,10 @@ function resetForm() {
       }
     })
 
-    // Hide results and form sections, show initial page
+    // Hide all sections except initial page
     resultsSection.classList.add("hidden")
     formSection.classList.add("hidden")
+    informationPage.classList.add("hidden")
     initialPage.classList.remove("hidden")
 
     // Update progress and initial page state

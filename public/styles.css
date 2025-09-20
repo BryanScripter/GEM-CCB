@@ -507,6 +507,63 @@ body {
   margin-top: 1rem;
 }
 
+/* Information Page */
+.information-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  margin-top: 2rem;
+}
+
+.info-card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.info-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.visit-info {
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.visit-info p {
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+.topics-list {
+  list-style: none;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid #3b82f6;
+}
+
+.topics-list li {
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.info-card .btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
 /* Form Section */
 .form-section {
   margin-top: 2rem;

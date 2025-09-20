@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação GEM - Grupo de Estudo Musical</title>
+    <title>Avaliação GEM - Grupo de Educação Musical</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <div class="container">
         <!-- Header -->
@@ -17,28 +15,54 @@
             <p>Grupo de Educação Musical - Formulário de Avaliação</p>
         </header>
 
-        <!-- Added initial page for user and congregation info -->
         <!-- Initial Information Page -->
         <div id="initial-page" class="initial-page">
             <div class="welcome-card">
                 <h2>📋 Informações Iniciais</h2>
                 <p>Antes de iniciar a avaliação, precisamos de algumas informações:</p>
-
+                
                 <div class="input-group">
                     <label for="inspector-name">Nome do Responsável pela Vistoria: *</label>
                     <input type="text" id="inspector-name" placeholder="Digite seu nome completo..." required>
                 </div>
-
+                
                 <div class="input-group">
                     <label for="congregation-name">Nome da Congregação/Igreja: *</label>
                     <input type="text" id="congregation-name" placeholder="Digite o nome da congregação..." required>
                 </div>
-
+                
                 <button type="button" id="start-evaluation-btn" class="btn btn-primary" disabled>
                     <span class="btn-icon">▶️</span>
                     Iniciar Avaliação
                 </button>
                 <p id="initial-message" class="submit-message">Preencha todos os campos para iniciar a avaliação</p>
+            </div>
+        </div>
+
+        <!-- Information Page -->
+        <div id="information-page" class="information-page hidden">
+            <div class="info-card">
+                <h2>📋 Informações sobre a Visita</h2>
+                <div class="visit-info">
+                    <p>A presente visita realizada teve o principal intuito de demonstrar boas práticas que estão sendo realizadas em nossa Regional, bem como orientar e dar apoio aos temas:</p>
+                    
+                    <ul class="topics-list">
+                        <li>• Atualização no Sistema de Administração Musical</li>
+                        <li>• Formulários do GEM</li>
+                        <li>• GEM Online</li>
+                        <li>• Calendário Musical do Município</li>
+                        <li>• Assuntos Diversos</li>
+                    </ul>
+                    
+                    <p>Depois de explanado os assuntos acima citados, foram feitos os questionamentos abaixo, assim todos os assuntos foram tratados com as devidas orientações e as dúvidas sanadas.</p>
+                    
+                    <p>Ficou definido que faremos um plano de ação para realizarmos o preenchimento dos formulários de cadastro dos candidatos do GEM e a atualização dos candidatos e músicos que constam no sistema de administração musical, daremos o apoio necessário para que tudo vá bem, para tanto, ficou agendada nova visita de apoio em 18/03/2023, onde faremos novo relatório.</p>
+                </div>
+                
+                <button type="button" id="proceed-to-form-btn" class="btn btn-primary">
+                    <span class="btn-icon">📝</span>
+                    Prosseguir para o Formulário
+                </button>
             </div>
         </div>
 
@@ -59,7 +83,7 @@
             <!-- Questions Form -->
             <form id="gem-form" class="questions-form">
                 <div id="questions-container"></div>
-
+                
                 <div class="submit-section">
                     <button type="button" id="show-results-btn" class="btn btn-primary" disabled>
                         <span class="btn-icon">📊</span>
@@ -132,5 +156,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
