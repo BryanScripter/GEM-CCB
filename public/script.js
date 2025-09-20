@@ -146,9 +146,17 @@ function updateInitialPageState() {
 
 // Proceed to form from information page
 function proceedToForm() {
+  const inspectorName = inspectorInput.value.trim()
+  const congregationName = congregationInput.value.trim()
+
+  if (!inspectorName || !congregationName) {
+    alert("Por favor, preencha seu nome e o nome da congregação antes de prosseguir para o formulário.")
+    return
+  }
+
   informationPage.classList.add("hidden")
   formSection.classList.remove("hidden")
-  window.scrollTo(0, 0)
+  formSection.scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
 // Render all questions
