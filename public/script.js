@@ -1,4 +1,4 @@
-// Questions data
+// Dados das perguntas
 const questions = [
   {
     text: "O Encarregado de Orquestra deixou instrutores responsáveis pela atualização no Sistema de Administração Musical? A sugestão é de que sejam pelo menos dois irmãos instrutores.",
@@ -86,10 +86,10 @@ const questions = [
   },
 ]
 
-// State management
+// Gerenciamento de estado
 const answers = questions.map(() => ({ response: null, justification: "", textResponse: "" }))
 
-// DOM elements
+// Elementos do DOM
 const initialPage = document.getElementById("initial-page")
 const informationPage = document.getElementById("information-page")
 const formSection = document.getElementById("form-section")
@@ -103,8 +103,9 @@ const congregationInput = document.getElementById("congregation-name")
 const proceedToFormBtn = document.getElementById("proceed-to-form-btn")
 const initialMessage = document.getElementById("initial-message")
 const resetFormBtn = document.getElementById("reset-form-btn")
+const loadingScreen = document.getElementById("loading-screen")
 
-// Initialize the application
+// Inicializar a aplicação
 function init() {
   setupInitialPageListeners()
   renderQuestions()
@@ -112,39 +113,37 @@ function init() {
   updateProgress()
 }
 
-// Setup initial page listeners
+// Configurar listeners da página inicial
 function setupInitialPageListeners() {
   inspectorInput.addEventListener("input", updateInitialPageState)
   congregationInput.addEventListener("input", updateInitialPageState)
-  // Removed the proceed button event listener from initial page
+  // Removido o event listener do botão de prosseguir da página inicial
 }
 
-// Update initial page state
+// Atualizar estado da página inicial
 function updateInitialPageState() {
   const inspectorName = inspectorInput.value.trim()
   const congregationName = congregationInput.value.trim()
 
   const canStart = inspectorName !== "" && congregationName !== ""
 
-  // Automatically show information page when both fields are filled
+  // Mostrar automaticamente a página de informações quando ambos os campos estiverem preenchidos
   if (canStart) {
     initialMessage.style.display = "none"
-    // Show information page automatically
+    // Mostrar página de informações automaticamente
     initialPage.classList.add("hidden")
     informationPage.classList.remove("hidden")
     window.scrollTo(0, 0)
   } else {
     initialMessage.style.display = "block"
     initialMessage.textContent = "Preencha todos os campos para prosseguir"
-    // Hide information page if fields are not complete
+    // Esconder página de informações se os campos não estiverem completos
     informationPage.classList.add("hidden")
     initialPage.classList.remove("hidden")
   }
 }
 
-// Removed proceedDirectlyToForm function as it's no longer needed
-
-// Proceed to form from information page
+// Prosseguir para o formulário da página de informações
 function proceedToForm() {
   const inspectorName = inspectorInput.value.trim()
   const congregationName = congregationInput.value.trim()
@@ -154,12 +153,14 @@ function proceedToForm() {
     return
   }
 
-  informationPage.classList.add("hidden")
-  formSection.classList.remove("hidden")
-  formSection.scrollIntoView({ behavior: "smooth", block: "start" })
+  showLoadingAnimation(() => {
+    informationPage.classList.add("hidden")
+    formSection.classList.remove("hidden")
+    formSection.scrollIntoView({ behavior: "smooth", block: "start" })
+  })
 }
 
-// Render all questions
+// Renderizar todas as perguntas
 function renderQuestions() {
   questionsContainer.innerHTML = ""
 
@@ -199,9 +200,9 @@ function renderQuestions() {
   })
 }
 
-// Setup event listeners
+// Configurar event listeners
 function setupEventListeners() {
-  // Radio button listeners
+  // Listeners dos botões de rádio
   questions.forEach((question, index) => {
     if (question.type === "yesno") {
       const simRadio = document.getElementById(`sim-${index}`)
@@ -240,17 +241,16 @@ function setupEventListeners() {
     }
   })
 
-  // Button listeners
+  // Listeners dos botões
   showResultsBtn.addEventListener("click", showResults)
   document.getElementById("download-pdf-btn").addEventListener("click", generatePDF)
   document.getElementById("print-btn").addEventListener("click", () => window.print())
   document.getElementById("back-to-form-btn").addEventListener("click", backToForm)
   resetFormBtn.addEventListener("click", resetForm)
-  // Added event listener for proceed to form button
-  document.getElementById("proceed-to-form-btn").addEventListener("click", proceedToForm)
+  proceedToFormBtn.addEventListener("click", proceedToForm)
 }
 
-// Update progress bar and button state
+// Atualizar barra de progresso e estado do botão
 function updateProgress() {
   const stats = getStats()
   const congregationName = congregationInput.value.trim()
@@ -275,7 +275,7 @@ function updateProgress() {
   submitMessage.style.display = canShowResults ? "none" : "block"
 }
 
-// Calculate statistics
+// Calcular estatísticas
 function getStats() {
   const yesNoQuestions = questions.filter((q) => q.type === "yesno")
   const textQuestions = questions.filter((q) => q.type === "text")
@@ -311,13 +311,13 @@ function getStats() {
   }
 }
 
-// Show results section
+// Mostrar seção de resultados
 function showResults() {
   const stats = getStats()
   const congregationName = congregationInput.value.trim()
   const inspectorName = inspectorInput.value.trim()
 
-  // Hide form and show results
+  // Esconder formulário e mostrar resultados
   formSection.classList.add("hidden")
   resultsSection.classList.remove("hidden")
 
@@ -351,7 +351,7 @@ function showResults() {
   window.scrollTo(0, 0)
 }
 
-// Generate detailed answers
+// Gerar respostas detalhadas
 function generateDetailedAnswers() {
   const container = document.getElementById("detailed-answers-content")
   container.innerHTML = ""
@@ -400,162 +400,180 @@ function generateDetailedAnswers() {
   })
 }
 
-// Generate PDF report
+// Gerar relatório PDF
 async function generatePDF() {
-  try {
-    const { jsPDF } = window.jspdf
-    const pdf = new jsPDF()
+  showLoadingAnimation(async () => {
+    try {
+      const { jsPDF } = window.jspdf
+      const pdf = new jsPDF()
 
-    const congregationName = congregationInput.value.trim()
-    const inspectorName = inspectorInput.value.trim()
+      const congregationName = congregationInput.value.trim()
+      const inspectorName = inspectorInput.value.trim()
 
-    // Add title
-    pdf.setFontSize(20)
-    pdf.setFont(undefined, "bold")
-    pdf.text("AVALIAÇÃO GEM", 105, 30, { align: "center" })
-    pdf.setFontSize(16)
-    pdf.setFont(undefined, "normal")
-    pdf.text("Grupo de Educação Musical", 105, 40, { align: "center" })
+      // Adicionar título
+      pdf.setFontSize(20)
+      pdf.setFont(undefined, "bold")
+      pdf.text("AVALIAÇÃO GEM", 105, 30, { align: "center" })
+      pdf.setFontSize(16)
+      pdf.setFont(undefined, "normal")
+      pdf.text("Grupo de Educação Musical", 105, 40, { align: "center" })
 
-    pdf.setFontSize(14)
-    pdf.setFont(undefined, "bold")
-    pdf.text(`Congregação: ${congregationName}`, 105, 50, { align: "center" })
-    pdf.text(`Responsável: ${inspectorName}`, 105, 60, { align: "center" })
+      pdf.setFontSize(14)
+      pdf.setFont(undefined, "bold")
+      pdf.text(`Congregação: ${congregationName}`, 105, 50, { align: "center" })
+      pdf.text(`Responsável: ${inspectorName}`, 105, 60, { align: "center" })
 
-    // Add date
-    const currentDate = new Date().toLocaleDateString("pt-BR")
-    pdf.setFontSize(12)
-    pdf.setFont(undefined, "normal")
-    pdf.text(`Data: ${currentDate}`, 20, 75)
+      // Adicionar data
+      const currentDate = new Date().toLocaleDateString("pt-BR")
+      pdf.setFontSize(12)
+      pdf.setFont(undefined, "normal")
+      pdf.text(`Data: ${currentDate}`, 20, 75)
 
-    // Add statistics
-    const stats = getStats()
-    const totalResponses = stats.sim + stats.nao + stats.textAnswered
+      // Adicionar estatísticas
+      const stats = getStats()
 
-    pdf.setFontSize(14)
-    pdf.setFont(undefined, "bold")
-    pdf.text("ESTATÍSTICAS:", 20, 90)
-    pdf.setFontSize(12)
-    pdf.setFont(undefined, "normal")
-    pdf.text(`Total de respostas: ${stats.totalAnswered}/${questions.length}`, 20, 105)
-    pdf.text(`Perguntas Sim/Não respondidas: ${stats.sim + stats.nao}/${stats.totalYesNo}`, 20, 115)
-    pdf.text(`Perguntas de texto respondidas: ${stats.textAnswered}/${stats.totalText}`, 20, 125)
+      pdf.setFontSize(14)
+      pdf.setFont(undefined, "bold")
+      pdf.text("ESTATÍSTICAS:", 20, 90)
+      pdf.setFontSize(12)
+      pdf.setFont(undefined, "normal")
+      pdf.text(`Total de respostas: ${stats.totalAnswered}/${questions.length}`, 20, 105)
+      pdf.text(`Perguntas Sim/Não respondidas: ${stats.sim + stats.nao}/${stats.totalYesNo}`, 20, 115)
+      pdf.text(`Perguntas de texto respondidas: ${stats.textAnswered}/${stats.totalText}`, 20, 125)
 
-    if (totalResponses > 0) {
-      pdf.text(`Respostas "Sim": ${stats.sim} (${Math.round((stats.sim / totalResponses) * 100)}%)`, 20, 135)
-      pdf.text(`Respostas "Não": ${stats.nao} (${Math.round((stats.nao / totalResponses) * 100)}%)`, 20, 145)
-      pdf.text(
-        `Respostas de Texto: ${stats.textAnswered} (${Math.round((stats.textAnswered / totalResponses) * 100)}%)`,
-        20,
-        155,
-      )
-    }
-
-    // Add detailed answers
-    pdf.setFontSize(14)
-    pdf.setFont(undefined, "bold")
-    pdf.text("RESPOSTAS DETALHADAS:", 20, 175)
-
-    let yPosition = 190
-    pdf.setFontSize(10)
-    pdf.setFont(undefined, "normal")
-
-    questions.forEach((question, index) => {
-      // Check if we need a new page
-      if (yPosition > 250) {
-        pdf.addPage()
-        yPosition = 30
+      if (stats.totalAnswered > 0) {
+        pdf.text(`Respostas "Sim": ${stats.sim} (${stats.simPercentage}%)`, 20, 135)
+        pdf.text(`Respostas "Não": ${stats.nao} (${stats.naoPercentage}%)`, 20, 145)
+        pdf.text(
+          `Respostas de Texto: ${stats.textAnswered} (${Math.round((stats.textAnswered / stats.totalAnswered) * 100)}%)`,
+          20,
+          155,
+        )
       }
 
-      // Question
-      const questionText = `${index + 1}. ${question.text}`
-      const questionLines = pdf.splitTextToSize(questionText, 170)
+      // Adicionar respostas detalhadas
+      pdf.setFontSize(14)
       pdf.setFont(undefined, "bold")
-      pdf.text(questionLines, 20, yPosition)
-      yPosition += questionLines.length * 5 + 5
+      pdf.text("RESPOSTAS DETALHADAS:", 20, 175)
+
+      let yPosition = 190
+      pdf.setFontSize(10)
       pdf.setFont(undefined, "normal")
 
-      // Answer
-      if (question.type === "yesno") {
-        const response = answers[index].response
-        pdf.text(`Resposta: ${response ? (response === "sim" ? "SIM" : "NÃO") : "Não respondida"}`, 20, yPosition)
-        yPosition += 10
-
-        if (answers[index].justification) {
-          const justificationLines = pdf.splitTextToSize(`Justificativa: ${answers[index].justification}`, 170)
-          pdf.text(justificationLines, 20, yPosition)
-          yPosition += justificationLines.length * 5
+      questions.forEach((question, index) => {
+        // Verificar se precisamos de uma nova página
+        if (yPosition > 250) {
+          pdf.addPage()
+          yPosition = 30
         }
-      } else {
-        const textResponse = answers[index].textResponse || "Não respondida"
-        const responseLines = pdf.splitTextToSize(`Resposta: ${textResponse}`, 170)
-        pdf.text(responseLines, 20, yPosition)
-        yPosition += responseLines.length * 5
-      }
 
-      yPosition += 10 // Space between questions
-    })
+        // Pergunta
+        const questionText = `${index + 1}. ${question.text}`
+        const questionLines = pdf.splitTextToSize(questionText, 170)
+        pdf.setFont(undefined, "bold")
+        pdf.text(questionLines, 20, yPosition)
+        yPosition += questionLines.length * 5 + 5
+        pdf.setFont(undefined, "normal")
 
-    // Save the PDF
-    pdf.save("relatorio-avaliacao-gem.pdf")
-  } catch (error) {
-    console.error("Erro ao gerar PDF:", error)
-    alert("Erro ao gerar PDF. Tente novamente.")
-  }
+        // Resposta
+        if (question.type === "yesno") {
+          const response = answers[index].response
+          pdf.text(`Resposta: ${response ? (response === "sim" ? "SIM" : "NÃO") : "Não respondida"}`, 20, yPosition)
+          yPosition += 10
+
+          if (answers[index].justification) {
+            const justificationLines = pdf.splitTextToSize(`Justificativa: ${answers[index].justification}`, 170)
+            pdf.text(justificationLines, 20, yPosition)
+            yPosition += justificationLines.length * 5
+          }
+        } else {
+          const textResponse = answers[index].textResponse || "Não respondida"
+          const responseLines = pdf.splitTextToSize(`Resposta: ${textResponse}`, 170)
+          pdf.text(responseLines, 20, yPosition)
+          yPosition += responseLines.length * 5
+        }
+
+        yPosition += 10 // Espaço entre perguntas
+      })
+
+      // Salvar o PDF
+      pdf.save("relatorio-avaliacao-gem.pdf")
+    } catch (error) {
+      console.error("Erro ao gerar PDF:", error)
+      alert("Erro ao gerar PDF. Tente novamente.")
+    }
+  })
 }
 
-// Back to form
+// Voltar para o formulário
 function backToForm() {
   resultsSection.classList.add("hidden")
   formSection.classList.remove("hidden")
   window.scrollTo(0, 0)
 }
 
-// Reset form function to clear all data and return to initial page
+// Função de resetar formulário para limpar todos os dados e retornar à página inicial
 function resetForm() {
-  // Show confirmation dialog
+  // Mostrar diálogo de confirmação
   if (confirm("Tem certeza que deseja resetar o formulário? Todos os dados preenchidos serão perdidos.")) {
-    // Clear all answers
-    answers.forEach((answer, index) => {
-      answers[index] = { response: null, justification: "", textResponse: "" }
+    showLoadingAnimation(() => {
+      // Limpar todas as respostas
+      answers.forEach((answer, index) => {
+        answers[index] = { response: null, justification: "", textResponse: "" }
+      })
+
+      // Limpar campos de entrada
+      inspectorInput.value = ""
+      congregationInput.value = ""
+
+      // Limpar todas as entradas do formulário
+      questions.forEach((question, index) => {
+        if (question.type === "yesno") {
+          const simRadio = document.getElementById(`sim-${index}`)
+          const naoRadio = document.getElementById(`nao-${index}`)
+          const justificationText = document.getElementById(`justification-text-${index}`)
+          const justificationContainer = document.getElementById(`justification-${index}`)
+
+          if (simRadio) simRadio.checked = false
+          if (naoRadio) naoRadio.checked = false
+          if (justificationText) justificationText.value = ""
+          if (justificationContainer) justificationContainer.style.display = "none"
+        } else {
+          const textArea = document.getElementById(`text-${index}`)
+          if (textArea) textArea.value = ""
+        }
+      })
+
+      // Esconder todas as seções exceto a página inicial
+      resultsSection.classList.add("hidden")
+      formSection.classList.add("hidden")
+      informationPage.classList.add("hidden")
+      initialPage.classList.remove("hidden")
+
+      // Atualizar progresso e estado da página inicial
+      updateProgress()
+      updateInitialPageState()
+
+      // Rolar para o topo
+      window.scrollTo(0, 0)
     })
-
-    // Clear input fields
-    inspectorInput.value = ""
-    congregationInput.value = ""
-
-    // Clear all form inputs
-    questions.forEach((question, index) => {
-      if (question.type === "yesno") {
-        const simRadio = document.getElementById(`sim-${index}`)
-        const naoRadio = document.getElementById(`nao-${index}`)
-        const justificationText = document.getElementById(`justification-text-${index}`)
-        const justificationContainer = document.getElementById(`justification-${index}`)
-
-        if (simRadio) simRadio.checked = false
-        if (naoRadio) naoRadio.checked = false
-        if (justificationText) justificationText.value = ""
-        if (justificationContainer) justificationContainer.style.display = "none"
-      } else {
-        const textArea = document.getElementById(`text-${index}`)
-        if (textArea) textArea.value = ""
-      }
-    })
-
-    // Hide all sections except initial page
-    resultsSection.classList.add("hidden")
-    formSection.classList.add("hidden")
-    informationPage.classList.add("hidden")
-    initialPage.classList.remove("hidden")
-
-    // Update progress and initial page state
-    updateProgress()
-    updateInitialPageState()
-
-    // Scroll to top
-    window.scrollTo(0, 0)
   }
 }
 
-// Initialize the application when DOM is loaded
+function showLoadingAnimation(callback) {
+  const loadingScreen = document.getElementById("loading-screen")
+
+  // Mostrar animação de carregamento
+  loadingScreen.classList.add("show")
+
+  // Após 2 segundos, esconder carregamento e executar callback
+  setTimeout(() => {
+    loadingScreen.classList.remove("show")
+    if (callback) {
+      callback()
+    }
+  }, 2000)
+}
+
+// Inicializar a aplicação quando o DOM for carregado
 document.addEventListener("DOMContentLoaded", init)

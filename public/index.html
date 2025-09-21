@@ -9,13 +9,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Cabeçalho -->
         <header class="header">
             <h1>Avaliação GEM</h1>
-            <p>Grupo de Estudo Musical - Formulário de Avaliação</p>
+            <p>Grupo de Educação Musical - Formulário de Avaliação</p>
         </header>
 
-        <!-- Initial Information Page -->
+        <!-- Página de Informações Iniciais -->
         <div id="initial-page" class="initial-page">
             <div class="welcome-card">
                 <h2>📋 Informações Iniciais</h2>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <!-- Information Page -->
+        <!-- Página de Informações -->
         <div id="information-page" class="information-page">
             <div class="info-card">
                 <h2>📋 Informações sobre a Visita</h2>
@@ -60,10 +60,34 @@
             </div>
         </div>
 
-        <!-- Modified form section to be hidden initially -->
-        <!-- Form Section -->
+        <!-- Animação de Carregamento Musical -->
+        <div id="loading-screen" class="loading-screen hidden">
+            <div class="loading-content">
+                <h3>Preparando o Formulário...</h3>
+                <div class="musical-staff">
+                    <div class="staff-lines">
+                        <div class="staff-line"></div>
+                        <div class="staff-line"></div>
+                        <div class="staff-line"></div>
+                        <div class="staff-line"></div>
+                        <div class="staff-line"></div>
+                    </div>
+                    <div class="musical-notes">
+                        <div class="note note-1">♪</div>
+                        <div class="note note-2">♫</div>
+                        <div class="note note-3">♪</div>
+                        <div class="note note-4">♬</div>
+                        <div class="note note-5">♪</div>
+                    </div>
+                </div>
+                <div class="loading-text">Carregando avaliação GEM...</div>
+            </div>
+        </div>
+
+        <!-- Seção do formulário modificada para ficar oculta inicialmente -->
+        <!-- Seção do Formulário -->
         <div id="form-section" class="form-section hidden">
-            <!-- Progress Bar -->
+            <!-- Barra de Progresso -->
             <div class="progress-card">
                 <div class="progress-info">
                     <span id="progress-text">Progresso: 0/21 perguntas</span>
@@ -74,7 +98,7 @@
                 </div>
             </div>
 
-            <!-- Questions Form -->
+            <!-- Formulário de Perguntas -->
             <form id="gem-form" class="questions-form">
                 <div id="questions-container"></div>
                 
@@ -88,15 +112,15 @@
             </form>
         </div>
 
-        <!-- Results Section -->
+        <!-- Seção de Resultados -->
         <div id="results-section" class="results-section hidden">
             <div class="congregation-info">
                 <h2 id="results-congregation-name"></h2>
                 <p id="results-inspector-name"></p>
             </div>
 
-            <!-- Removed chart section and kept only percentage display -->
-            <!-- Statistics Cards -->
+            <!-- Seção do gráfico removida, mantendo apenas a exibição de porcentagens -->
+            <!-- Cards de Estatísticas -->
             <div class="stats-grid">
                 <div class="stat-card stat-sim">
                     <div class="stat-number" id="stat-sim">0</div>
@@ -119,13 +143,13 @@
                 </div>
             </div>
 
-            <!-- Detailed Answers -->
+            <!-- Respostas Detalhadas -->
             <div class="detailed-answers">
                 <h3>Respostas Detalhadas</h3>
                 <div id="detailed-answers-content"></div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Botões de Ação -->
             <div class="action-buttons">
                 <button type="button" id="download-pdf-btn" class="btn btn-primary">
                     <span class="btn-icon">⬇️</span>
@@ -139,7 +163,7 @@
                     <span class="btn-icon">📝</span>
                     Voltar ao Formulário
                 </button>
-                <!-- Added reset button to clear all data and start over -->
+                <!-- Botão de reset adicionado para limpar todos os dados e recomeçar -->
                 <button type="button" id="reset-form-btn" class="btn btn-danger">
                     <span class="btn-icon">🔄</span>
                     Resetar Formulário
