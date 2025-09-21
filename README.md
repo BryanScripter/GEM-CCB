@@ -1,6 +1,6 @@
 # GEM - Formulário de Avaliação de Congregações
 
-Um sistema web para avaliação de congregações do Grupo de Educação Musical (GEM), desenvolvido com HTML, CSS e JavaScript puro.
+Um sistema web para avaliação de congregações do Grupo de Estudo Musical (GEM), desenvolvido com HTML, CSS e JavaScript puro.
 
 ## 📋 Sobre o Projeto
 
