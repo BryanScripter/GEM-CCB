@@ -4,7 +4,7 @@ Um sistema web para avaliação de congregações do Grupo de Estudo Musical (GE
 
 ## 📋 Sobre o Projeto
 
-Este projeto foi desenvolvido para facilitar o processo de avaliação de congregações do GEM, permitindo que responsáveis pela vistoria preencham um formulário estruturado com 21 perguntas específicas e gerem relatórios em PDF com os resultados.
+Este projeto foi desenvolvido para facilitar o processo de avaliação de congregações do Grupo de Estudo Musical (GEM), permitindo que responsáveis pela vistoria preencham um formulário estruturado com 21 perguntas específicas e gerem relatórios em PDF com os resultados.
 
 ## ✨ Funcionalidades
 
@@ -36,7 +36,6 @@ gem-evaluation/
 │   └── script.js           # Lógica JavaScript
 └── README.md               # Documentação do projeto
 \`\`\`
-
 
 
 ## 📝 Perguntas do Formulário
@@ -88,9 +87,8 @@ O relatório PDF inclui:
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT.
-
+Este projeto está sob a licença!
 
 ---
 
-Feito de forma voluntária!
+Desenvolvido de forma voluntária.

@@ -417,7 +417,7 @@ async function generatePDF() {
       pdf.text("AVALIAÇÃO GEM", 105, 30, { align: "center" })
       pdf.setFontSize(16)
       pdf.setFont(undefined, "normal")
-      pdf.text("Grupo de Educação Musical", 105, 40, { align: "center" })
+      pdf.text("Grupo de Estudo Musical", 105, 40, { align: "center" })
 
       pdf.setFontSize(14)
       pdf.setFont(undefined, "bold")

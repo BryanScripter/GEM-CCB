@@ -167,7 +167,7 @@ export default function GEMEvaluation() {
   const generatePDF = async () => {
     // Simulated PDF generation - in a real app you'd use jsPDF + html2canvas
     const content = `
-AVALIAÇÃO GEM - GRUPO DE EDUCAÇÃO MUSICAL
+AVALIAÇÃO GEM - GRUPO DE ESTUDO MUSICAL
 
 ESTATÍSTICAS:
 - Total de respostas: ${stats.totalAnswered}/${questions.length}
@@ -178,18 +178,17 @@ ESTATÍSTICAS:
 
 RESPOSTAS DETALHADAS:
 ${questions
-  .map(
-    (question, index) => `
+        .map(
+          (question, index) => `
 ${index + 1}. ${question.text}
-${
-  question.type === "yesno"
-    ? `Resposta: ${answers[index].response ? (answers[index].response === "sim" ? "SIM" : "NÃO") : "Não respondida"}
+${question.type === "yesno"
+              ? `Resposta: ${answers[index].response ? (answers[index].response === "sim" ? "SIM" : "NÃO") : "Não respondida"}
 ${answers[index].justification ? `Justificativa: ${answers[index].justification}` : ""}`
-    : `Resposta: ${answers[index].textResponse || "Não respondida"}`
-}
+              : `Resposta: ${answers[index].textResponse || "Não respondida"}`
+            }
 `,
-  )
-  .join("\n")}
+        )
+        .join("\n")}
     `
 
     const blob = new Blob([content], { type: "text/plain" })
@@ -211,7 +210,7 @@ ${answers[index].justification ? `Justificativa: ${answers[index].justification}
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Avaliação GEM</h1>
-          <p className="text-lg text-gray-600">Grupo de Educação Musical - Formulário de Avaliação</p>
+          <p className="text-lg text-gray-600">Grupo de Estudo Musical - Formulário de Avaliação</p>
         </div>
 
         {/* Progress Bar */}
@@ -389,11 +388,10 @@ ${answers[index].justification ? `Justificativa: ${answers[index].justification}
                             <div className="flex items-center gap-4 mb-2">
                               <span className="text-sm font-medium">Resposta:</span>
                               <span
-                                className={`px-2 py-1 rounded text-sm font-medium ${
-                                  answers[index].response === "sim"
+                                className={`px-2 py-1 rounded text-sm font-medium ${answers[index].response === "sim"
                                     ? "bg-green-100 text-green-800"
                                     : "bg-red-100 text-red-800"
-                                }`}
+                                  }`}
                               >
                                 {answers[index].response === "sim" ? "SIM" : "NÃO"}
                               </span>
