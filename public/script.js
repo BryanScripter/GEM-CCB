@@ -313,42 +313,43 @@ function getStats() {
 
 // Mostrar seção de resultados
 function showResults() {
-  const stats = getStats()
-  const congregationName = congregationInput.value.trim()
-  const inspectorName = inspectorInput.value.trim()
+  showLoadingAnimation(() => {
+    const stats = getStats()
+    const congregationName = congregationInput.value.trim()
+    const inspectorName = inspectorInput.value.trim()
 
-  // Esconder formulário e mostrar resultados
-  formSection.classList.add("hidden")
-  resultsSection.classList.remove("hidden")
+    // Esconder formulário e mostrar resultados
+    formSection.classList.add("hidden")
+    resultsSection.classList.remove("hidden")
 
-  document.getElementById("results-congregation-name").textContent = `Avaliação GEM - ${congregationName}`
-  document.getElementById("results-inspector-name").textContent = `Responsável pela Vistoria: ${inspectorName}`
+    document.getElementById("results-congregation-name").textContent = `Avaliação GEM - ${congregationName}`
+    document.getElementById("results-inspector-name").textContent = `Responsável pela Vistoria: ${inspectorName}`
 
-  // Update statistics with percentages
-  const totalResponses = stats.sim + stats.nao + stats.textAnswered
+    // Update statistics with percentages
+    const totalResponses = stats.sim + stats.nao + stats.textAnswered
 
-  document.getElementById("stat-sim").textContent = stats.sim
-  document.getElementById("stat-nao").textContent = stats.nao
-  document.getElementById("stat-text").textContent = stats.textAnswered
-  document.getElementById("stat-total").textContent = stats.totalAnswered
+    document.getElementById("stat-sim").textContent = stats.sim
+    document.getElementById("stat-nao").textContent = stats.nao
+    document.getElementById("stat-text").textContent = stats.textAnswered
+    document.getElementById("stat-total").textContent = stats.totalAnswered
 
-  // Calculate and display percentages
-  if (totalResponses > 0) {
-    document.getElementById("stat-sim-percentage").textContent = `${Math.round((stats.sim / totalResponses) * 100)}%`
-    document.getElementById("stat-nao-percentage").textContent = `${Math.round((stats.nao / totalResponses) * 100)}%`
-    document.getElementById("stat-text-percentage").textContent =
-      `${Math.round((stats.textAnswered / totalResponses) * 100)}%`
-  } else {
-    document.getElementById("stat-sim-percentage").textContent = "0%"
-    document.getElementById("stat-nao-percentage").textContent = "0%"
-    document.getElementById("stat-text-percentage").textContent = "0%"
-  }
+    // Calculate and display percentages
+    if (totalResponses > 0) {
+      document.getElementById("stat-sim-percentage").textContent = `${Math.round((stats.sim / totalResponses) * 100)}%`
+      document.getElementById("stat-nao-percentage").textContent = `${Math.round((stats.nao / totalResponses) * 100)}%`
+      document.getElementById("stat-text-percentage").textContent =
+        `${Math.round((stats.textAnswered / totalResponses) * 100)}%`
+    } else {
+      document.getElementById("stat-sim-percentage").textContent = "0%"
+      document.getElementById("stat-nao-percentage").textContent = "0%"
+      document.getElementById("stat-text-percentage").textContent = "0%"
+    }
 
-  // Generate detailed answers
-  generateDetailedAnswers()
+    // Generate detailed answers
+    generateDetailedAnswers()
 
-  // Scroll to top
-  window.scrollTo(0, 0)
+    resultsSection.scrollIntoView({ behavior: "smooth", block: "start" })
+  })
 }
 
 // Gerar respostas detalhadas
